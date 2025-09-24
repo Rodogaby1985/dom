@@ -110,7 +110,8 @@ router.get('/oauth_callback', async (req, res, next) => {
 });
 
 // Ruta principal para la página de bienvenida
-router.get('/', (req, res) => {
+// También responde a /suc sin barra final
+router.get('', (req, res) => {
   res.send(`
     <h1>Aplicación de Envíos Sucursal</h1>
     <p>Para instalar la aplicación en tu Tienda Nube, hacé clic en el siguiente enlace:</p>
