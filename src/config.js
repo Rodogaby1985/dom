@@ -15,7 +15,7 @@ if (publicApiUrl && !publicApiUrl.startsWith('http')) {
 const config = {
   port: process.env.PORT || 3000,
   host: process.env.HOST || '0.0.0.0',
-  modality: process.env.MODALIDAD || 'domicilio',
+  modality: process.env.MODALIDAD || 'sucursal',
   publicApiUrl: publicApiUrl,
   sessionSecret: process.env.SESSION_SECRET || 'change-me-in-production',
   // --- AGREGADO: Configuración para Redis ---
