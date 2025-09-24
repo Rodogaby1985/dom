@@ -31,6 +31,7 @@ const redisStore = new RedisStore({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 // [EDITADO SUCURSAL] - Archivos estáticos bajo /suc
 app.use('/suc', express.static('public'));
 
@@ -58,6 +59,9 @@ app.use((req, _res, next) => {
 // [EDITADO SUCURSAL] - Rutas bajo /suc
 app.use('/suc', authRoutes);
 app.use('/suc/api', shippingRoutes);
+app.get('/suc', (req, res) => {
+  res.redirect('/suc/');
+});
 
 // Ruta de Health Check
 app.get('/health', (_req, res) => {
