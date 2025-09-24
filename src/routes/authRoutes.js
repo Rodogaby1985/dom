@@ -1,4 +1,4 @@
-// src/routes/authRoutes.js v3.1 (VARIANTE DOMICILIO) con logs de depuración de sesión
+// src/routes/authRoutes.js v3.1 (VARIANTE SUCURSAL) con logs de depuración de sesión
 const express = require('express');
 const router = express.Router();
 const oauthClient = require('../utils/oauthClient');
@@ -71,7 +71,7 @@ router.get('/oauth_callback', async (req, res, next) => {
 
     logger.info(`Token obtenido para la tienda ID: ${storeId}`);
 
-    const carrierName = "Mobapp Domicilio";
+    const carrierName = "Mobapp Sucursal";
     const carrierInfo = await tiendaNubeService.registerShippingCarrier(
       storeId,
       accessToken,
@@ -81,11 +81,10 @@ router.get('/oauth_callback', async (req, res, next) => {
     const carrierId = carrierInfo.id;
 
     const options = [
-      { code: "ANDREANI_DOM", name: "ANDREANI A DOMICILIO" },
-      { code: "CA_DOM", name: "CORREO ARGENTINO A DOMICILIO" },
-      { code: "OCA_DOM", name: "OCA A DOMICILIO" },
-      { code: "URBANO_DOM", name: "URBANO A DOMICILIO" },
-      { code: "ANDREANI_BIGGER_DOM", name: "ANDREANI BIGGER A DOM" }
+      { code: "ANDREANI_SUC", name: "ANDREANI A SUCURSAL" },
+      { code: "CA_SUC", name: "CORREO ARGENTINO A SUCURSAL" },
+      { code: "OCA_SUC", name: "OCA A SUCURSAL" },
+     
     ];
 
     for (const opt of options) {
@@ -100,7 +99,7 @@ router.get('/oauth_callback', async (req, res, next) => {
       });
     }
 
-    res.send("¡Aplicación de Domicilio instalada y configurada con éxito!");
+    res.send("¡Aplicación de Sucursal instalada y configurada con éxito!");
 
   } catch (error) {
     next(error);
