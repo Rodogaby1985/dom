@@ -1,0 +1,12 @@
+{
+  "healthcheck": {
+    "web": {
+      "method": "GET",
+      "path": "/health",
+      "status": 200,
+      "interval": 10,
+      "timeout": 5,
+      "retries": 3
+    }
+  }
+}
