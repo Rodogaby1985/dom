@@ -1,13 +1,11 @@
-// app.js V2.6 DOMICILIO (con Static Files)
-// app.js - Versión final con almacenamiento de sesiones en Redis
+// app.js V2.6 SUCURSAL (con Static Files)
+// Versión final con almacenamiento de sesiones en Redis y rutas bajo /suc
 'use strict';
 
 const config = require('./src/config');
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-// --- LÍNEA CORREGIDA (de nuevo) ---
-// Usamos la desestructuración, que es la forma correcta para las versiones modernas de connect-redis.
 const { RedisStore } = require("connect-redis"); 
 const { createClient } = require("redis");
 const logger = require('./src/utils/logger');
@@ -24,7 +22,6 @@ app.set('trust proxy', 1);
 const redisClient = createClient({ url: config.redisUrl });
 redisClient.connect().catch(err => logger.error('No se pudo conectar a Redis:', err));
 
-// Ahora 'new RedisStore' funcionará porque la clase se importó correctamente.
 const redisStore = new RedisStore({
   client: redisClient,
   prefix: "dom-session:",
@@ -33,7 +30,9 @@ const redisStore = new RedisStore({
 // Middlewares estándar
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+
+// [EDITADO SUCURSAL] - Archivos estáticos bajo /suc
+app.use('/suc', express.static('public'));
 
 // --- CONFIGURACIÓN DE SESIÓN CON REDIS ---
 app.use(
@@ -56,9 +55,9 @@ app.use((req, _res, next) => {
   next();
 });
 
-// Rutas de la aplicación
-app.use('/', authRoutes);
-app.use('/api', shippingRoutes);
+// [EDITADO SUCURSAL] - Rutas bajo /suc
+app.use('/suc', authRoutes);
+app.use('/suc/api', shippingRoutes);
 
 // Ruta de Health Check
 app.get('/health', (_req, res) => {
@@ -90,6 +89,7 @@ async function startServer() {
     process.exit(1);
   }
 }
+
 // Endpoint para probar sesión con Redis
 app.get('/session-test', (req, res) => {
   if (!req.session.views) {
@@ -100,22 +100,8 @@ app.get('/session-test', (req, res) => {
   res.send(`Has visitado esta página ${req.session.views} veces (almacenado en Redis).`);
 });
 
-app.use(
-  session({
-    store: redisStore,
-    secret: config.sessionSecret,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: true,         // Solo HTTPS
-      httpOnly: true,       // No accesible desde JS
-      sameSite: 'none'      // Requerido si tu frontend está en otro dominio
-    }
-  })
-);
-
+// [OPCIONAL SUCURSAL] - Puedes quitar el segundo app.use(session(...)) duplicado si no lo necesitas
 
 startServer();
 
 module.exports = app;
-
