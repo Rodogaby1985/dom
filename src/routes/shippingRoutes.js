@@ -1,4 +1,4 @@
-// Variante DOMICILIO (sheetMap solo DOM)
+// Variante SUCURSAL (sheetMap solo SUC)
 const express = require('express');
 const router = express.Router();
 const { getShippingRatesFromSheet } = require('../services/googleSheetsService');
@@ -11,11 +11,10 @@ router.post('/shipping_rates', async (req, res) => {
   for (const it of items) totalWeightKg += (it.grams / 1000) * it.quantity;
 
   const sheetMap = {
-    "ANDREANI A DOMICILIO": "ANDREANI DOM",
-    "CORREO ARGENTINO A DOMICILIO": "CA DOM",
-    "OCA A DOMICILIO": "OCA DOM",
-    "URBANO A DOMICILIO": "URBANO",
-    "ANDREANI BIGGER A DOM": "ANDREANI BIGGER A DOM"
+    "ANDREANI A SUCURSAL": "ANDREANI SUC",
+    "CORREO ARGENTINO A SUCURSAL": "CA SUC",
+    "OCA A SUCURSAL": "OCA SUC",
+  
   };
 
   const options = (data.carrier?.options || []).filter(o => !o.name.toUpperCase().includes('SUCURSAL'));
