@@ -1,4 +1,4 @@
-// src/routes/authRoutes.js v3.1 (VARIANTE SUCURSAL) con logs de depuración de sesión
+// suc/src/routes/authRoutes.js v3.1 (VARIANTE SUCURSAL) con logs de depuración de sesión
 const express = require('express');
 const router = express.Router();
 const oauthClient = require('../utils/oauthClient');
@@ -24,6 +24,7 @@ router.get('/install', (req, res) => {
     logger.info(`Session Object Guardado: ${JSON.stringify(req.session)}`);
     // --- FIN LOGS ---
 
+    // [EDITADO SUCURSAL] - Usa el endpoint configurado para sucursal
     const redirectUri = `${config.publicApiUrl}/oauth_callback`;
     const params = new URLSearchParams({
       response_type: 'code',
@@ -71,6 +72,7 @@ router.get('/oauth_callback', async (req, res, next) => {
 
     logger.info(`Token obtenido para la tienda ID: ${storeId}`);
 
+    // [EDITADO SUCURSAL] - Carrier y opciones para sucursal
     const carrierName = "Mobapp Sucursal";
     const carrierInfo = await tiendaNubeService.registerShippingCarrier(
       storeId,
@@ -80,11 +82,11 @@ router.get('/oauth_callback', async (req, res, next) => {
     );
     const carrierId = carrierInfo.id;
 
+    // [EDITADO SUCURSAL] - Solo opciones de sucursal
     const options = [
       { code: "ANDREANI_SUC", name: "ANDREANI A SUCURSAL" },
       { code: "CA_SUC", name: "CORREO ARGENTINO A SUCURSAL" },
       { code: "OCA_SUC", name: "OCA A SUCURSAL" },
-     
     ];
 
     for (const opt of options) {
@@ -99,6 +101,7 @@ router.get('/oauth_callback', async (req, res, next) => {
       });
     }
 
+    // [EDITADO SUCURSAL] - Mensaje de confirmación para sucursal
     res.send("¡Aplicación de Sucursal instalada y configurada con éxito!");
 
   } catch (error) {
@@ -109,11 +112,10 @@ router.get('/oauth_callback', async (req, res, next) => {
 // Ruta principal para la página de bienvenida
 router.get('/', (req, res) => {
   res.send(`
-    <h1>Aplicación de Envíos</h1>
+    <h1>Aplicación de Envíos Sucursal</h1>
     <p>Para instalar la aplicación en tu Tienda Nube, hacé clic en el siguiente enlace:</p>
     <a href="/install">Instalar Aplicación</a>
   `);
 });
 
 module.exports = router;
-
