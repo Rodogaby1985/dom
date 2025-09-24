@@ -1,4 +1,4 @@
-// src/services/googleSheetsService.js V5.7 Variante DOMICILIO (mínima)
+// src/services/googleSheetsService.js V5.7 Variante SUCURSAL (mínima)
 const { GoogleAuth } = require('google-auth-library');
 const { google } = require('googleapis');
 const logger = require('../utils/logger');
@@ -9,11 +9,10 @@ let sheetDataCache = {};
 
 const POSTAL_CODES_SHEET_NAME = "CODIGOS POSTALES";
 const RATE_SHEET_NAMES = [
-  "ANDREANI DOM",
-  "CA DOM",
-  "OCA DOM",
-  "URBANO",
-  "ANDREANI BIGGER A DOM"
+  "ANDREANI SUC",
+  "CA SUC",
+  "OCA SUC",
+
 ];
 
 const getSheetsClient = async () => {
@@ -71,7 +70,7 @@ const loadAllSheetDataIntoCache = async () => {
       sheetDataCache[sheetName] = ratesResponse.data.values;
     }
   } catch (e) {
-    logger.error("Error cargando cache Sheets (DOMICILIO): " + e.message);
+    logger.error("Error cargando cache Sheets (SUCURSAL): " + e.message);
   }
 };
 
