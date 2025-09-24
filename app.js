@@ -58,6 +58,13 @@ app.use((req, _res, next) => {
 // [EDITADO SUCURSAL] - Rutas bajo /suc
 app.use('/suc', authRoutes);
 app.use('/suc/api', shippingRoutes);
+app.get('/suc', (req, res) => {
+  res.send(`
+    <h1>Aplicación de Envíos Sucursal</h1>
+    <p>Para instalar la aplicación en tu Tienda Nube, hacé clic en el siguiente enlace:</p>
+    <a href="/suc/install">Instalar Aplicación</a>
+  `);
+});
 
 // Ruta de Health Check
 app.get('/health', (_req, res) => {
